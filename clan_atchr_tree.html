@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Arbre Généalogique Modulaire - Clan Atchr</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #e0e7ff 0%, #f7f7fa 100%);
+      margin: 0;
+      overflow-x: hidden;
+    }
+    #tree-container {
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-x pan-y;
+      background: transparent;
+    }
+    .node circle {
+      fill: #fff;
+      stroke: #4a90e2;
+      stroke-width: 3px;
+      filter: drop-shadow(0 2px 6px #b3c6e7);
+      transition: r 0.2s, fill 0.2s, stroke 0.2s;
+    }
+    .node.male circle { fill: #e3f0ff; stroke: #1976d2; }
+    .node.female circle { fill: #ffe3f0; stroke: #d21976; }
+    .node.unknown circle { fill: #f7f7fa; stroke: #bbb; }
+    .node:hover circle {
+      fill: #e3f0ff;
+      stroke: #1a237e;
+      r: 24;
+    }
+    .node text {
+      font: 17px 'Segoe UI', sans-serif;
+      fill: #222;
+      paint-order: stroke fill;
+      stroke: #fff;
+      stroke-width: 3px;
+      stroke-linejoin: round;
+      stroke-opacity: 0.7;
+    }
+    .node text.label {
+      stroke: none;
+      fill: #222;
+    }
+    .link {
+      fill: none;
+      stroke: #90a4ae;
+      stroke-width: 2.5px;
+      opacity: 0.7;
+    }
+    .tooltip {
+      position: absolute;
+      pointer-events: none;
+      background: rgba(255,255,255,0.97);
+      border: 1.5px solid #4a90e2;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px #b3c6e7;
+      padding: 10px 16px;
+      font-size: 16px;
+      color: #1a237e;
+      z-index: 10;
+      min-width: 120px;
+      max-width: 320px;
+      line-height: 1.5;
+      display: none;
+    }
+    .legend {
+      font-size: 15px;
+      font-family: 'Segoe UI', sans-serif;
+      background: rgba(255,255,255,0.9);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px #b3c6e7;
+      padding: 8px 18px;
+      position: absolute;
+      left: 24px;
+      top: 24px;
+      z-index: 20;
+    }
+    /* Responsive pour tablette/mobile */
+    @media (max-width: 900px) {
+      #person-detail, #person-form-panel, #stats-panel {
+        width: 100vw !important;
+        left: 0 !important;
+        right: 0 !important;
+        min-width: unset;
+        max-width: unset;
+        padding: 12px 2vw 12px 2vw !important;
+        top: 0 !important;
+        height: 100vh !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        z-index: 100 !important;
+      }
+      .legend {
+        left: 2vw;
+        top: 2vw;
+        font-size: 13px;
+        padding: 6px 10px;
+      }
+      .tooltip {
+        font-size: 13px;
+        min-width: 80px;
+      }
+      #tree-container {
+        width: 100vw;
+        height: 70vh;
+        min-height: 50vh;
+        max-height: 70vh;
+        /* padding-bottom retiré ici, sera géré dynamiquement */
+      }
+      body {
+        /* padding-bottom retiré ici, sera géré dynamiquement */
+      }
+      /* Boutons en colonne, fixes en bas */
+      #mobile-btns {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        background: rgba(255,255,255,0.97);
+        z-index: 99;
+        box-shadow: 0 -4px 16px #b3c6e7;
+        padding: 14px 0 14px 0;
+        gap: 12px;
+        border-top: 1.5px solid #dbeafe;
+        border-radius: 18px 18px 0 0;
+        align-items: center;
+        max-width: 100vw;
+      }
+      #mobile-btns button {
+        width: 94vw;
+        max-width: 500px;
+        margin: 0 auto;
+        font-size: 17px !important;
+        padding: 15px 0 !important;
+        border-radius: 13px;
+        box-shadow: 0 2px 10px #b3c6e7;
+        border: 1.5px solid #e0e7ff;
+        transition: box-shadow 0.18s, background 0.18s;
+      }
+      #mobile-btns button:active {
+        background: #e0e7ff;
+        box-shadow: 0 1px 4px #b3c6e7;
+      }
+      /* Cache les boutons originaux sur mobile */
+      #add-person-btn, #manage-unions-btn, #export-json-btn, #export-excel-btn, #export-pdf-btn, #show-stats-btn, #import-json-btn, #import-excel-btn {
+        display: none !important;
+      }
+      div[style*='position:absolute'][style*='right:30px'] {
+        position: static !important;
+        width: 98vw !important;
+        margin: 0 auto 10px auto !important;
+        box-sizing: border-box;
+        padding: 8px 2vw !important;
+      }
+    }
+    @media (max-width: 600px) {
+      #person-detail, #person-form-panel, #stats-panel {
+        width: 100vw !important;
+        left: 0 !important;
+        right: 0 !important;
+        padding: 6px 1vw 6px 1vw !important;
+        top: 0 !important;
+        height: 100vh !important;
+      }
+      .legend {
+        font-size: 11px;
+        padding: 4px 6px;
+      }
+      .tooltip {
+        font-size: 11px;
+        min-width: 60px;
+      }
+      #tree-container {
+        width: 100vw;
+        height: 60vh;
+        min-height: 40vh;
+        max-height: 60vh;
+        /* padding-bottom retiré ici, sera géré dynamiquement */
+      }
+      body {
+        /* padding-bottom retiré ici, sera géré dynamiquement */
+      }
+      .node text {
+        font-size: 11px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="tree-container"></div>
+  <div id="tooltip" class="tooltip"></div>
+  <svg id="legend" class="legend"></svg>
+  <div style="position:absolute;top:10px;right:30px;z-index:30;background:rgba(255,255,255,0.95);border-radius:10px;padding:10px 18px;box-shadow:0 2px 8px #b3c6e7;" id="top-bar">
+    <input id="search-person" type="text" placeholder="🔍 Rechercher une personne..." style="width:180px;margin-right:10px;padding:3px 8px;border-radius:6px;border:1.2px solid #bbb;">
+    <label for="person-select"><b>Afficher à partir de :</b></label>
+    <select id="person-select" style="margin:0 10px 0 6px;"></select>
+    <label for="gen-slider"><b>Générations :</b></label>
+    <input type="range" id="gen-slider" min="1" max="10" value="10" style="vertical-align:middle;width:90px;">
+    <span id="gen-value">10</span>
+  </div>
+  <div id="person-detail" style="display:none;position:fixed;top:0;right:0;width:340px;height:100vh;background:rgba(255,255,255,0.98);box-shadow:-4px 0 16px #b3c6e7;z-index:50;padding:28px 24px 24px 24px;overflow-y:auto;">
+    <button id="close-detail" style="position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;color:#1976d2;cursor:pointer;">✕</button>
+    <div id="detail-content"></div>
+  </div>
+  <div id="person-form-panel" style="display:none;position:fixed;top:0;right:0;width:360px;height:100vh;background:rgba(255,255,255,0.98);box-shadow:-4px 0 16px #b3c6e7;z-index:60;padding:28px 24px 24px 24px;overflow-y:auto;">
+    <button id="close-form" style="position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;color:#1976d2;cursor:pointer;">✕</button>
+    <h2 id="form-title">Ajouter une personne</h2>
+    <form id="person-form">
+      <label>Nom<br><input name="name" required style="width:95%;margin-bottom:8px;"></label><br>
+      <label>Surnom<br><input name="nickname" style="width:95%;margin-bottom:8px;"></label><br>
+      <label>Genre<br>
+        <select name="gender" style="width:95%;margin-bottom:8px;">
+          <option value="male">Homme</option>
+          <option value="female">Femme</option>
+          <option value="unknown">Inconnu</option>
+        </select>
+      </label><br>
+      <label>Commentaire<br><textarea name="comment" rows="2" style="width:95%;margin-bottom:8px;"></textarea></label><br>
+      <label>Parents<br>
+        <select name="parents" id="parent-select" multiple style="width:95%;margin-bottom:8px;min-height:38px;"></select>
+        <small style="color:#888">(Ctrl+clic pour multi-sélection)</small>
+      </label><br>
+      <input type="hidden" name="id">
+      <button type="submit" style="background:#1976d2;color:#fff;padding:7px 18px;border:none;border-radius:6px;font-size:16px;">Enregistrer</button>
+      <button type="button" id="delete-person" style="background:#fff;color:#d21976;border:1.2px solid #d21976;padding:7px 18px;border-radius:6px;font-size:16px;margin-left:12px;display:none;">Supprimer</button>
+    </form>
+  </div>
+  <!-- Boutons principaux pour desktop -->
+  <button id="add-person-btn" style="position:absolute;top:10px;left:30px;z-index:40;background:#1976d2;color:#fff;border:none;border-radius:8px;padding:8px 18px;font-size:17px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">+ Ajouter une personne</button>
+  <button id="manage-unions-btn" style="position:absolute;top:60px;left:30px;z-index:40;background:#fff;color:#1976d2;border:1.2px solid #1976d2;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Gérer les unions</button>
+  <button id="export-json-btn" style="position:absolute;top:110px;left:30px;z-index:40;background:#fff;color:#388e3c;border:1.2px solid #388e3c;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Exporter JSON</button>
+  <button id="export-excel-btn" style="position:absolute;top:160px;left:30px;z-index:40;background:#fff;color:#1976d2;border:1.2px solid #1976d2;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Exporter Excel</button>
+  <button id="export-pdf-btn" style="position:absolute;top:210px;left:30px;z-index:40;background:#fff;color:#d21976;border:1.2px solid #d21976;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Exporter PDF</button>
+  <button id="show-stats-btn" style="position:absolute;top:260px;left:30px;z-index:40;background:#fff;color:#1976d2;border:1.2px solid #1976d2;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Statistiques</button>
+  <button id="center-tree-btn" style="position:absolute;top:410px;left:30px;z-index:40;background:#fff;color:#1976d2;border:1.2px solid #1976d2;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Centrer l’arbre</button>
+  <div id="stats-panel" style="display:none;position:fixed;top:0;left:0;width:340px;height:100vh;background:rgba(255,255,255,0.98);box-shadow:4px 0 16px #b3c6e7;z-index:80;padding:28px 24px 24px 24px;overflow-y:auto;">
+    <button id="close-stats" style="position:absolute;top:12px;right:16px;font-size:22px;background:none;border:none;color:#1976d2;cursor:pointer;">✕</button>
+    <h2>Statistiques</h2>
+    <div id="stats-content"></div>
+  </div>
+  <!-- Ajout des éléments pour l'import JSON/Excel si manquants -->
+  <input type="file" id="import-json-file" style="display:none" accept=".json,.zip">
+  <input type="file" id="import-excel-file" style="display:none" accept=".xlsx">
+  <button id="import-json-btn" style="position:absolute;top:310px;left:30px;z-index:40;background:#fff;color:#1976d2;border:1.2px solid #1976d2;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Importer JSON/ZIP</button>
+  <button id="import-excel-btn" style="position:absolute;top:360px;left:30px;z-index:40;background:#fff;color:#1976d2;border:1.2px solid #1976d2;border-radius:8px;padding:7px 16px;font-size:16px;box-shadow:0 2px 8px #b3c6e7;cursor:pointer;">Importer Excel</button>
+  <!-- Boutons principaux pour mobile/tablette -->
+  <div id="mobile-btns" style="display:none;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    let currentRootId = null;
+    // --- Chargement modulaire des fichiers ---
+    async function loadJSON(url) {
+      const r = await fetch(url);
+      if (!r.ok) throw new Error('Erreur chargement ' + url);
+      return await r.json();
+    }
+
+    // --- Liste modulaire des fichiers de parentages à fusionner ---
+    const parentageFiles = [
+      'parentages.json'
+    ];
+
+    async function loadAllParentages(files) {
+      const arrays = await Promise.all(files.map(loadJSON));
+      return arrays.flat();
+    }
+
+    // --- Fusion des modules en structure exploitable ---
+    async function buildModularTree(rootId, genMax = 10) {
+      const [persons, unions, parentages] = [allPersons, allUnions, allParentages];
+      const personById = {};
+      persons.forEach(p => personById[p.id] = { ...p, spouses: [], children: [], generation: p.generation });
+      unions.forEach(u => {
+        u.partners.forEach((id, i) => {
+          const other = u.partners[1 - i];
+          if (personById[id] && !personById[id].spouses.includes(personById[other])) {
+            personById[id].spouses.push(personById[other]);
+          }
+        });
+      });
+      parentages.forEach(rel => {
+        if (personById[rel.parent] && personById[rel.child]) {
+          const parent = personById[rel.parent];
+          if (!parent.children.includes(personById[rel.child])) {
+            parent.children.push(personById[rel.child]);
+          }
+        }
+      });
+      // Ajout du calcul de génération si absent
+      function setGenerations(node, gen) {
+        node.generation = gen;
+        (node.children||[]).forEach(child => setGenerations(child, gen+1));
+      }
+      function pruneCyclesAndGen(node, visited = new Set(), gen = 1) {
+        if (!node || visited.has(node.id) || gen > genMax) return null;
+        visited.add(node.id);
+        node.generation = gen;
+        node.children = (node.children || [])
+          .map(child => pruneCyclesAndGen(child, new Set(visited), gen+1))
+          .filter(Boolean);
+        return node;
+      }
+      const root = personById[rootId];
+      if (!root) return null;
+      return pruneCyclesAndGen(root, new Set(), 1);
+    }
+
+    // --- Affichage D3 avec pan/zoom, survol, info-bulle ---
+    function renderTree(rootData, containerId) {
+      const width = window.innerWidth, height = window.innerHeight;
+      d3.select(containerId).selectAll('*').remove();
+      // Calcul dynamique de l'espacement horizontal selon le nombre de feuilles
+      function countLeaves(node) {
+        if (!node.children || node.children.length === 0) return 1;
+        return node.children.map(countLeaves).reduce((a, b) => a + b, 0);
+      }
+      const leaves = countLeaves(rootData);
+      // Plus il y a de feuilles, plus on espace
+      const minWidth = Math.max(width, 110 * leaves + 300); // Augmente l'espacement horizontal
+      const depth = (function getDepth(node) {
+        if (!node.children || node.children.length === 0) return 1;
+        return 1 + Math.max(...node.children.map(getDepth));
+      })(rootData);
+      const minHeight = Math.max(height, 120 * depth + 120); // Augmente l'espacement vertical
+      const nodeRadius = minWidth > 2500 ? 10 : minWidth > 1800 ? 13 : 18;
+      const fontSize = minWidth > 2500 ? '10px' : minWidth > 1800 ? '13px' : '17px';
+      const svg = d3.select(containerId).append('svg')
+        .attr('width', minWidth).attr('height', minHeight)
+        .call(d3.zoom()
+          .scaleExtent([0.3, 2.5])
+          .on('zoom', (event) => g.attr('transform', event.transform))
+        );
+      const g = svg.append('g').attr('transform', 'translate(60,40)');
+      const root = d3.hierarchy(rootData, d => d.children);
+      const treeLayout = d3.tree().separation((a, b) => a.parent === b.parent ? 1.5 : 2.5).size([minHeight-80, minWidth-200]);
+      treeLayout(root);
+      // Liens courbés
+      g.selectAll('.link')
+        .data(root.links())
+        .enter().append('path')
+        .attr('class', 'link')
+        .attr('d', d3.linkHorizontal()
+          .x(d => d.y)
+          .y(d => d.x)
+          .context(null)
+        )
+        .attr('stroke', '#90a4ae')
+        .attr('stroke-width', 2.5)
+        .attr('opacity', 0.7)
+        .attr('fill', 'none');
+      // Nœuds
+      const node = g.selectAll('.node')
+        .data(root.descendants())
+        .enter().append('g')
+        .attr('class', d => 'node ' + (d.data.gender || 'unknown'))
+        .attr('transform', d => `translate(${d.y},${d.x})`)
+        .on('mouseover', function(event, d) {
+          d3.select(this).select('circle').attr('fill', '#e3f0ff').attr('stroke', '#1a237e').attr('r', nodeRadius + 6);
+          showTooltip(event, d.data);
+        })
+        .on('mousemove', function(event) {
+          moveTooltip(event);
+        })
+        .on('mouseleave', function(event, d) {
+          d3.select(this).select('circle').attr('fill', null).attr('stroke', null).attr('r', nodeRadius);
+          hideTooltip();
+        })
+        .on('click', function(event, d) {
+          showPersonDetail(d.data);
+        });
+      node.append('circle').attr('r', nodeRadius);
+      // Ajout d'un fond blanc sous le texte, parfaitement aligné
+      node.append('text')
+        .attr('dy', 5)
+        .attr('x', d => d.children ? -24 : 24)
+        .attr('class', 'label')
+        .style('text-anchor', d => d.children ? 'end' : 'start')
+        .style('font-size', fontSize)
+        .text(d => d.data.name)
+        .each(function(d) {
+          // Mesure du texte pour ajuster le rect
+          const text = d3.select(this);
+          const bbox = this.getBBox();
+          d._textWidth = bbox.width;
+          d._textHeight = bbox.height;
+        });
+      node.insert('rect', 'text')
+        .attr('x', d => (d.children ? -24 - (d._textWidth + 12) : 24 - 6))
+        .attr('y', d => -d._textHeight/2 - 2)
+        .attr('width', d => d._textWidth + 12)
+        .attr('height', d => d._textHeight + 4)
+        .attr('fill', 'white')
+        .attr('opacity', 0.7)
+        .attr('rx', 7)
+        .attr('ry', 7);
+      // Surbrillance si recherche active
+      const searchVal = document.getElementById('search-person')?.value;
+      if (searchVal) highlightNodeByName(searchVal);
+      // Légende graphique
+      const legendSvg = d3.select('#legend');
+      legendSvg.selectAll('*').remove();
+      const legendData = [
+        {label: 'Homme', color: '#e3f0ff'},
+        {label: 'Femme', color: '#ffe3f0'},
+        {label: 'Genre inconnu', color: '#f7f7fa'}
+      ];
+      legendSvg.attr('width', 220).attr('height', 90);
+      legendSvg.selectAll('g')
+        .data(legendData)
+        .enter().append('g')
+        .attr('transform', (d, i) => `translate(10,${i*28+10})`)
+        .each(function(d) {
+          d3.select(this).append('circle').attr('r', 10).attr('cx', 10).attr('cy', 0).attr('fill', d.color).attr('stroke', '#4a90e2').attr('stroke-width', 2);
+          d3.select(this).append('text').attr('x', 28).attr('y', 5).text(d.label).attr('fill', '#222').attr('font-size', 15);
+        });
+    }
+
+    // --- Info-bulle élégante ---
+    function showTooltip(event, data) {
+      const tooltip = document.getElementById('tooltip');
+      let html = `<b>${data.name || ''}</b>`;
+      if (data.comment) {
+        html += `<br><span style='color:#1976d2;font-style:italic'>${data.comment}</span>`;
+      } else {
+        html += `<br><span style='color:#bbb;font-style:italic'>Aucun commentaire</span>`;
+      }
+      if (data.generation) html += `<br><span style='color:#888'>Génération : ${data.generation}</span>`;
+      tooltip.innerHTML = html;
+      tooltip.style.display = 'block';
+      moveTooltip(event);
+    }
+    function moveTooltip(event) {
+      const tooltip = document.getElementById('tooltip');
+      tooltip.style.left = (event.clientX + 18) + 'px';
+      tooltip.style.top = (event.clientY + 12) + 'px';
+    }
+    function hideTooltip() {
+      document.getElementById('tooltip').style.display = 'none';
+    }
+
+    // --- Fiche détaillée d'une personne ---
+    function showPersonDetail(person) {
+      const detail = document.getElementById('person-detail');
+      const content = document.getElementById('detail-content');
+      if (!person) { detail.style.display = 'none'; return; }
+      // Recherche parents, conjoints, enfants
+      const parents = allParentages.filter(r => r.child === person.id).map(r => personById[r.parent]).filter(Boolean);
+      const children = allParentages.filter(r => r.parent === person.id).map(r => personById[r.child]).filter(Boolean);
+      const unions = allUnions.filter(u => u.partners.includes(person.id));
+      const spouses = unions.map(u => u.partners.find(id => id !== person.id)).map(id => personById[id]).filter(Boolean);
+      let html = `<h2 style='margin-top:0'>${person.name || ''}</h2>`;
+      if (person.nickname) html += `<div style='color:#1976d2;font-style:italic;margin-bottom:6px;'>Surnom : ${person.nickname}</div>`;
+      if (person.generation) html += `<div style='color:#888;margin-bottom:6px;'>Génération : ${person.generation}</div>`;
+      if (person.comment) html += `<div style='margin-bottom:10px;color:#444;'>${person.comment}</div>`;
+      html += `<hr style='margin:10px 0 10px 0;'>`;
+      // Parents avec bouton retirer
+      html += `<b>Parents :</b> ` + (parents.length ? parents.map(p => `<span style='margin-right:8px;'><a href='#' onclick='window.showPersonDetailById("${p.id}");return false;'>${p.name}</a> <button onclick='window.removeParent("${p.id}","${person.id}")' title='Retirer ce parent' style='color:#d21976;background:none;border:none;font-size:15px;cursor:pointer;'>✕</button></span>`).join('') : '<span style="color:#bbb">inconnu</span>') + ` <button onclick='window.openAddParentForm("${person.id}")' style='margin-left:6px;background:#1976d2;color:#fff;border:none;border-radius:5px;padding:1px 8px;font-size:13px;'>+ Ajouter</button><br>`;
+      // Conjoints (inchangé)
+      html += `<b>Conjoints :</b> ` + (spouses.length ? spouses.map(s => `<a href='#' onclick='window.showPersonDetailById("${s.id}");return false;'>${s.name}</a>`).join(', ') : '<span style="color:#bbb">aucun</span>') + '<br>';
+      // Enfants avec bouton retirer
+      html += `<b>Enfants :</b> ` + (children.length ? children.map(c => `<span style='margin-right:8px;'><a href='#' onclick='window.showPersonDetailById("${c.id}");return false;'>${c.name}</a> <button onclick='window.removeParent("${person.id}","${c.id}")' title='Retirer ce lien' style='color:#d21976;background:none;border:none;font-size:15px;cursor:pointer;'>✕</button></span>`).join('') : '<span style="color:#bbb">aucun</span>') + ` <button onclick='window.openAddChildForm("${person.id}")' style='margin-left:6px;background:#1976d2;color:#fff;border:none;border-radius:5px;padding:1px 8px;font-size:13px;'>+ Ajouter</button><br>`;
+      content.innerHTML = html;
+      detail.style.display = 'block';
+    }
+    // Ajout des fonctions globales pour gestion parentages
+    window.removeParent = function(parentId, childId) {
+      if (confirm('Retirer ce lien de parenté ?')) {
+        allParentages = allParentages.filter(r => !(r.parent === parentId && r.child === childId));
+        refreshTree();
+        showPersonDetailById(childId);
+      }
+    };
+    window.openAddParentForm = function(childId) {
+      const formDiv = document.createElement('div');
+      formDiv.style.margin = '10px 0';
+      formDiv.innerHTML = `<select id='add-parent-select'></select> <button id='add-parent-btn' style='background:#1976d2;color:#fff;border:none;border-radius:5px;padding:1px 8px;font-size:13px;'>Ajouter</button> <button id='cancel-add-parent' style='background:none;color:#888;border:none;font-size:13px;'>Annuler</button>`;
+      const content = document.getElementById('detail-content');
+      content.appendChild(formDiv);
+      const select = formDiv.querySelector('#add-parent-select');
+      allPersons.forEach(p => {
+        if (p.id !== childId && !allParentages.some(r => r.parent === p.id && r.child === childId)) {
+          const opt = document.createElement('option');
+          opt.value = p.id; opt.textContent = p.name;
+          select.appendChild(opt);
+        }
+      });
+      formDiv.querySelector('#add-parent-btn').onclick = function() {
+        const parentId = select.value;
+        if (parentId) {
+          allParentages.push({ parent: parentId, child: childId });
+          refreshTree();
+          showPersonDetailById(childId);
+        }
+      };
+      formDiv.querySelector('#cancel-add-parent').onclick = function() {
+        showPersonDetailById(childId);
+      };
+    };
+    window.openAddChildForm = function(parentId) {
+      const formDiv = document.createElement('div');
+      formDiv.style.margin = '10px 0';
+      formDiv.innerHTML = `<select id='add-child-select'></select> <button id='add-child-btn' style='background:#1976d2;color:#fff;border:none;border-radius:5px;padding:1px 8px;font-size:13px;'>Ajouter</button> <button id='cancel-add-child' style='background:none;color:#888;border:none;font-size:13px;'>Annuler</button>`;
+      const content = document.getElementById('detail-content');
+      content.appendChild(formDiv);
+      const select = formDiv.querySelector('#add-child-select');
+      allPersons.forEach(p => {
+        if (p.id !== parentId && !allParentages.some(r => r.parent === parentId && r.child === p.id)) {
+          const opt = document.createElement('option');
+          opt.value = p.id; opt.textContent = p.name;
+          select.appendChild(opt);
+        }
+      });
+      formDiv.querySelector('#add-child-btn').onclick = function() {
+        const childId = select.value;
+        if (childId) {
+          allParentages.push({ parent: parentId, child: childId });
+          refreshTree();
+          showPersonDetailById(parentId);
+        }
+      };
+      formDiv.querySelector('#cancel-add-child').onclick = function() {
+        showPersonDetailById(parentId);
+      };
+    };
+
+    // --- Chargement et affichage initiaux
+    (async function() {
+      try {
+        await loadAllData();
+        await populatePersonSelect();
+        await refreshTree();
+      } catch (e) {
+        document.getElementById('tree-container').innerHTML = '<b>Erreur de chargement des données JSON.<br>' + (e.message || e) + '</b>';
+        console.error(e);
+      }
+    })();
+
+    // --- Gestion des unions ---
+    document.getElementById('manage-unions-btn').onclick = function() {
+      openUnionPanel();
+    };
+    function openUnionPanel() {
+      document.getElementById('union-panel').style.display = 'block';
+      renderUnionList();
+      fillUnionForm();
+      setupUnionPanelEvents();
+    }
+    // Correction robustesse : sécuriser l'affectation de l'événement
+    const closeUnionPanelBtn = document.getElementById('close-union-panel');
+    if (closeUnionPanelBtn) {
+      closeUnionPanelBtn.onclick = function() {
+        document.getElementById('union-panel').style.display = 'none';
+      };
+    }
+    function fillUnionForm(union) {
+      const form = document.getElementById('union-form');
+      if (!form) return; // Sécurité : ne rien faire si le formulaire n'est pas présent
+      const p1 = form.partner1, p2 = form.partner2;
+      p1.innerHTML = p2.innerHTML = '';
+      allPersons.forEach(p => {
+        const opt1 = document.createElement('option');
+        opt1.value = p.id; opt1.textContent = p.name;
+        p1.appendChild(opt1);
+        const opt2 = document.createElement('option');
+        opt2.value = p.id; opt2.textContent = p.name;
+        p2.appendChild(opt2);
+      });
+      if (union) {
+        p1.value = union.partners[0];
+        p2.value = union.partners[1];
+        form.comment.value = union.comment || '';
+        form.unionIndex.value = union._index;
+        if (document.getElementById('delete-union')) document.getElementById('delete-union').style.display = '';
+      } else {
+        form.partner1.selectedIndex = 0;
+        form.partner2.selectedIndex = 1;
+        form.comment.value = '';
+        form.unionIndex.value = '';
+        if (document.getElementById('delete-union')) document.getElementById('delete-union').style.display = 'none';
+      }
+    }
+    function renderUnionList() {
+      const list = document.getElementById('union-list');
+      list.innerHTML = '';
+      allUnions.forEach((u, i) => {
+        const p1 = allPersons.find(p => p.id === u.partners[0]);
+        const p2 = allPersons.find(p => p.id === u.partners[1]);
+        const div = document.createElement('div');
+        div.style.marginBottom = '10px';
+        div.innerHTML = `<b>${p1?.name || u.partners[0]}</b> & <b>${p2?.name || u.partners[1]}</b><br><span style='color:#888'>${u.comment || ''}</span><br><button onclick='window.editUnion(${i})' style='margin-top:3px;background:#1976d2;color:#fff;border:none;border-radius:5px;padding:2px 10px;font-size:14px;'>Modifier</button>`;
+        list.appendChild(div);
+        u._index = i;
+      });
+    }
+    window.editUnion = function(i) {
+      fillUnionForm(allUnions[i]);
+    };
+    // Sécurisation de l'affectation d'événement sur 'delete-union'
+    function setupUnionPanelEvents() {
+      const unionForm = document.getElementById('union-form');
+      if (unionForm) {
+        unionForm.onsubmit = function(e) {
+          e.preventDefault();
+          const data = Object.fromEntries(new FormData(this));
+          if (data.partner1 === data.partner2) { alert('Les partenaires doivent être différents.'); return; }
+          const union = { partners: [data.partner1, data.partner2], comment: data.comment };
+          if (data.unionIndex) {
+            allUnions[parseInt(data.unionIndex)] = union;
+          } else {
+            allUnions.push(union);
+          }
+          renderUnionList();
+          fillUnionForm();
+          setupUnionPanelEvents(); // Réattacher après DOM update
+          refreshTree();
+        };
+      }
+      const deleteUnionBtn = document.getElementById('delete-union');
+      if (deleteUnionBtn) {
+        // Remove previous handler if any
+        deleteUnionBtn.onclick = null;
+        deleteUnionBtn.onclick = function() {
+          const idx = document.getElementById('union-form').unionIndex.value;
+          if (idx && confirm('Supprimer cette union ?')) {
+            allUnions.splice(idx, 1);
+            renderUnionList();
+            fillUnionForm();
+            setupUnionPanelEvents(); // Réattacher après DOM update
+            refreshTree();
+          }
+        };
+      } else {
+        // Optionnel : journaliser un avertissement pour le débogage
+        // console.warn("Bouton 'delete-union' introuvable lors de l'affectation de l'événement.");
+      }
+    }
+
+    // --- Export/Import ---
+    document.getElementById('export-json-btn').onclick = async function() {
+      const zip = new JSZip();
+      zip.file('persons.json', JSON.stringify(allPersons, null, 2));
+      zip.file('unions.json', JSON.stringify(allUnions, null, 2));
+      zip.file('parentages.json', JSON.stringify(allParentages, null, 2));
+      const blob = await zip.generateAsync({type: 'blob'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'arbre_genealogique_export.zip';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 500);
+    };
+    document.getElementById('export-excel-btn').onclick = function() {
+      // Convertir les données en feuilles Excel
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allPersons), 'Persons');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allUnions), 'Unions');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allParentages), 'Parentages');
+      const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
+      const blob = new Blob([wbout], {type: 'application/octet-stream'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'arbre_genealogique_export.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 500);
+    };
+    // --- Import JSON/ZIP ---
+    document.getElementById('import-json-btn').onclick = function() {
+      document.getElementById('import-json-file').click();
+    };
+    if (document.getElementById('import-json-file')) {
+      document.getElementById('import-json-file').onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.name.endsWith('.zip')) {
+          const zip = await JSZip.loadAsync(file);
+          const files = ['persons.json', 'unions.json', 'parentages.json'];
+          const loaded = await Promise.all(files.map(async fname => {
+            if (!zip.file(fname)) throw new Error(fname + ' manquant dans le ZIP');
+            return JSON.parse(await zip.file(fname).async('string'));
+          }));
+          [allPersons, allUnions, allParentages] = loaded;
+        } else if (file.name.endsWith('.json')) {
+          const text = await file.text();
+          try {
+            const data = JSON.parse(text);
+            if (Array.isArray(data) && data[0] && data[0].partners) {
+              allUnions = data;
+            } else if (Array.isArray(data) && data[0] && data[0].parent) {
+              allParentages = data;
+            } else if (Array.isArray(data)) {
+              allPersons = data;
+            } else {
+              alert('Format JSON non reconnu');
+              return;
+            }
+          } catch (e) { alert('Erreur de parsing JSON'); return; }
+        } else {
+          alert('Format non supporté');
+          return;
+        }
+        await populatePersonSelect();
+        refreshTree();
+        alert('Import réussi !');
+      };
+    }
+    // --- Import Excel ---
+    document.getElementById('import-excel-btn').onclick = function() {
+      document.getElementById('import-excel-file').click();
+    };
+    if (document.getElementById('import-excel-file')) {
+      document.getElementById('import-excel-file').onchange = async function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const data = new Uint8Array(evt.target.result);
+          const wb = XLSX.read(data, {type: 'array'});
+          const persons = XLSX.utils.sheet_to_json(wb.Sheets['Persons']||{});
+          const unions = XLSX.utils.sheet_to_json(wb.Sheets['Unions']||{});
+          const parentages = XLSX.utils.sheet_to_json(wb.Sheets['Parentages']||{});
+          if (persons.length) allPersons = persons;
+          if (unions.length) allUnions = unions;
+          if (parentages.length) allParentages = parentages;
+          populatePersonSelect();
+          refreshTree();
+          alert('Import Excel réussi !');
+        };
+        reader.readAsArrayBuffer(file);
+      };
+    }
+
+    // --- Chargement de toutes les données (persons, unions, parentages) ---
+    async function loadAllData() {
+      [allPersons, allUnions, allParentages] = await Promise.all([
+        loadJSON('persons.json'),
+        loadJSON('unions.json'),
+        loadAllParentages(parentageFiles)
+      ]);
+      personById = {};
+      allPersons.forEach(p => personById[p.id] = { ...p });
+    }
+
+    // --- Remplir la liste déroulante des personnes (racine) ---
+    async function populatePersonSelect(filter = '') {
+      const select = document.getElementById('person-select');
+      select.innerHTML = '';
+      let filtered = allPersons;
+      if (filter) {
+        const f = filter.trim().toLowerCase();
+        filtered = allPersons.filter(p =>
+          (p.name && p.name.toLowerCase().includes(f)) ||
+          (p.nickname && p.nickname.toLowerCase().includes(f)) ||
+          (p.id && p.id.toLowerCase().includes(f)) ||
+          (p.generation && (''+p.generation).includes(f))
+        );
+      }
+      filtered.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.name + (p.generation ? ` (G${p.generation})` : '');
+        if (p.id === currentRootId) opt.selected = true;
+        select.appendChild(opt);
+      });
+      document.getElementById('gen-value').textContent = Math.min(...filtered.map(p => p.generation)) || 1;
+      document.getElementById('gen-slider').value = Math.min(...filtered.map(p => p.generation)) || 1;
+    }
+
+    // --- Actualiser l'arbre après modification des données ---
+    function refreshTree() {
+      const rootId = document.getElementById('person-select').value;
+      const genMax = parseInt(document.getElementById('gen-slider').value);
+      if (rootId) {
+        buildModularTree(rootId, genMax).then(treeData => {
+          renderTree(treeData, '#tree-container');
+          currentRootId = rootId;
+        });
+      }
+    }
+    document.getElementById('person-select').onchange = refreshTree;
+    document.getElementById('gen-slider').oninput = function() {
+      document.getElementById('gen-value').textContent = this.value;
+      refreshTree();
+    };
+    document.getElementById('search-person').oninput = function() {
+      const val = this.value;
+      if (!val.trim()) {
+        highlightNodeByName('');
+        populatePersonSelect();
+        refreshTree();
+        return;
+      }
+      const normVal = normalizeString(val);
+      // Recherche tolérante (nom/surnom/id commence ou contient la recherche, sans accents ni casse)
+      const foundPerson = allPersons.find(p =>
+        normalizeString(p.name).startsWith(normVal) ||
+        normalizeString(p.nickname).startsWith(normVal) ||
+        normalizeString(p.id).startsWith(normVal)
+      ) || allPersons.find(p =>
+        normalizeString(p.name).includes(normVal) ||
+        normalizeString(p.nickname).includes(normVal) ||
+        normalizeString(p.id).includes(normVal)
+      );
+      if (foundPerson) {
+        currentRootId = foundPerson.id;
+        highlightNodeByName(val);
+        refreshTree();
+        populatePersonSelect(val);
+      } else {
+        highlightNodeByName(val);
+        // On ne vide plus l'arbre, on garde la racine actuelle et on surligne les correspondances partielles
+      }
+    };
+
+    // --- Surlignage des nœuds correspondant à la recherche ---
+    function normalizeString(str) {
+      return (str || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/\s+/g, '');
+    }
+    function highlightNodeByName(val) {
+      const normVal = normalizeString(val);
+      d3.selectAll('.node').each(function(d) {
+        if (!d || !d.data) { d3.select(this).classed('highlight', false); return; }
+        const name = normalizeString(d.data.name);
+        const nickname = normalizeString(d.data.nickname);
+        const id = normalizeString(d.data.id);
+        const match = name.includes(normVal) || nickname.includes(normVal) || id.includes(normVal);
+        d3.select(this).classed('highlight', !!(val && match));
+      });
+    }
+
+    // --- Statistiques ---
+    function updateStats() {
+      const totalPersons = allPersons.length;
+      const totalUnions = allUnions.length;
+      const totalParentages = allParentages.length;
+      const statsContent = document.getElementById('stats-content');
+      statsContent.innerHTML = `
+        <div style='margin-bottom:12px;'><b>Statistiques générales</b></div>
+        <div style='margin-bottom:8px;'>Total personnes : <b>${totalPersons}</b></div>
+        <div style='margin-bottom:8px;'>Total unions : <b>${totalUnions}</b></div>
+        <div style='margin-bottom:8px;'>Total parentages : <b>${totalParentages}</b></div>
+      `;
+    }
+    document.getElementById('show-stats-btn').onclick = function() {
+      document.getElementById('stats-panel').style.display = 'block';
+      updateStats();
+    };
+    document.getElementById('close-stats').onclick = function() {
+      document.getElementById('stats-panel').style.display = 'none';
+    };
+
+    // === EXPORT PDF (html2pdf.js) ===
+    document.getElementById('export-pdf-btn').onclick = function() {
+      const svgElem = document.querySelector('#tree-container svg');
+      if (!svgElem) return alert('Arbre non affiché.');
+      // Clone SVG and inline styles for export
+      const clone = svgElem.cloneNode(true);
+      // Wrap in a div for html2pdf
+      const wrapper = document.createElement('div');
+      wrapper.appendChild(clone);
+      // Use html2pdf.js
+      html2pdf(wrapper, {
+        margin: 0.5,
+        filename: 'arbre_genealogique.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+      });
+    };
+
+    // === STATISTIQUES DYNAMIQUES ===
+    function computeStats() {
+      // Supposons persons, unions, parentages sont en mémoire
+      const nbPersons = Object.keys(persons).length;
+      const nbUnions = Object.keys(unions).length;
+      const nbParentages = parentages.length;
+      // Générations
+      let minGen = Infinity, maxGen = -Infinity;
+      Object.values(persons).forEach(p => {
+        if (typeof p.generation === 'number') {
+          minGen = Math.min(minGen, p.generation);
+          maxGen = Math.max(maxGen, p.generation);
+        }
+      });
+      // Sexe
+      let nbM = 0, nbF = 0, nbU = 0;
+      Object.values(persons).forEach(p => {
+        if (p.sex === 'M') nbM++;
+        else if (p.sex === 'F') nbF++;
+        else nbU++;
+      });
+      // Statistiques
+      return {
+        nbPersons, nbUnions, nbParentages,
+        minGen, maxGen, nbM, nbF, nbU
+      };
+    }
+    function renderStatsPanel() {
+      const stats = computeStats();
+      document.getElementById('stats-content').innerHTML = `
+        <ul style="font-size:18px;line-height:1.7;">
+          <li><b>Personnes :</b> ${stats.nbPersons}</li>
+          <li><b>Unions :</b> ${stats.nbUnions}</li>
+          <li><b>Liens parenté :</b> ${stats.nbParentages}</li>
+          <li><b>Générations :</b> ${stats.minGen} à ${stats.maxGen}</li>
+          <li><b>Hommes :</b> ${stats.nbM}</li>
+          <li><b>Femmes :</b> ${stats.nbF}</li>
+          <li><b>Sexe inconnu :</b> ${stats.nbU}</li>
+        </ul>
+      `;
+    }
+    document.getElementById('show-stats-btn').onclick = function() {
+      renderStatsPanel();
+      document.getElementById('stats-panel').style.display = 'block';
+    };
+    document.getElementById('close-stats').onclick = function() {
+      document.getElementById('stats-panel').style.display = 'none';
+    };
+
+    // Charger html2pdf.js dynamiquement si besoin
+    (function() {
+      if (!window.html2pdf) {
+        var s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        document.head.appendChild(s);
+      }
+    })();
+
+    // Affectation des événements protégée
+    function safeSetOnClick(id, fn) {
+      const el = document.getElementById(id);
+      if (el) el.onclick = fn;
+    }
+    safeSetOnClick('import-json-btn', function() {
+      const el = document.getElementById('import-json-file');
+      if (el) el.click();
+    });
+    safeSetOnClick('import-excel-btn', function() {
+      const el = document.getElementById('import-excel-file');
+      if (el) el.click();
+    });
+    // === Boutons mobiles dynamiques ===
+    function showMobileBtns() {
+      const mobileBtns = document.getElementById('mobile-btns');
+      const treeContainer = document.getElementById('tree-container');
+      const isMobile = window.innerWidth <= 900;
+      if (!mobileBtns) return;
+      // Liste des boutons à cloner
+      const ids = [
+        'add-person-btn', 'manage-unions-btn', 'export-json-btn', 'export-excel-btn', 'export-pdf-btn', 'show-stats-btn', 'import-json-btn', 'import-excel-btn', 'center-tree-btn'
+      ];
+      mobileBtns.innerHTML = '';
+      ids.forEach(id => {
+        const orig = document.getElementById(id);
+        if (orig) {
+          const btn = orig.cloneNode(true);
+          btn.style.display = 'block';
+          btn.style.position = 'static';
+          btn.onclick = orig.onclick;
+          mobileBtns.appendChild(btn);
+        }
+      });
+      // Affiche le conteneur sur mobile
+      if (isMobile) {
+        mobileBtns.style.display = 'flex';
+        // Ajoute le padding-bottom pour éviter le chevauchement
+        treeContainer.style.paddingBottom = '90px';
+        document.body.style.paddingBottom = '90px';
+      } else {
+        mobileBtns.style.display = 'none';
+        treeContainer.style.paddingBottom = '';
+        document.body.style.paddingBottom = '';
+      }
+    }
+    window.addEventListener('resize', showMobileBtns);
+    window.addEventListener('DOMContentLoaded', showMobileBtns);
+
+    // --- Gestion affichage/masquage des boutons mobiles selon overlays ---
+    function updateMobileBtnsVisibility() {
+      const overlays = [
+        document.getElementById('person-detail'),
+        document.getElementById('person-form-panel'),
+        document.getElementById('stats-panel'),
+        document.getElementById('union-panel')
+      ];
+      const anyOpen = overlays.some(el => el && el.style.display !== 'none');
+      const mobileBtns = document.getElementById('mobile-btns');
+      if (mobileBtns) mobileBtns.style.display = anyOpen ? 'none' : '';
+    }
+    // Surveille l'ouverture/fermeture des overlays
+    ['person-detail','person-form-panel','stats-panel','union-panel'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const observer = new MutationObserver(updateMobileBtnsVisibility);
+      observer.observe(el, { attributes: true, attributeFilter: ['style'] });
+    });
+    // Appel initial au chargement
+    updateMobileBtnsVisibility();
+
+    // === Centrage de l’arbre ===
+    function centerTree() {
+      const svg = d3.select('#tree-container svg');
+      const g = svg.select('g');
+      if (!svg.empty() && !g.empty()) {
+        // Calculer le centre du SVG
+        const svgWidth = +svg.attr('width');
+        const svgHeight = +svg.attr('height');
+        const viewWidth = document.getElementById('tree-container').clientWidth;
+        const viewHeight = document.getElementById('tree-container').clientHeight;
+        // Calcul du facteur de zoom optimal (optionnel, ici on recentre seulement)
+        const x = (viewWidth/2) - (svgWidth/2) + 60; // 60 = translation initiale
+        const y = (viewHeight/2) - (svgHeight/2) + 40; // 40 = translation initiale
+        svg.transition().duration(400).call(
+          d3.zoom().transform,
+          d3.zoomIdentity.translate(x, y).scale(1)
+        );
+      }
+    }
+    document.getElementById('center-tree-btn').onclick = centerTree;
+  </script>
+</body>
+</html>

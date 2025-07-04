@@ -1,0 +1,982 @@
+[
+  {
+    "partners": [
+      "AHOSR",
+      "FEMME_ANIMA"
+    ],
+    "comment": "Union fondatrice du clan, femme d’Anima dont le nom est oublié"
+  },
+  {
+    "partners": [
+      "CHEMARATAL",
+      "OUTCHEKE_ANTE"
+    ],
+    "comment": "Union de Ʃəmaratal et Ʋcyəkə Antɩ, génération 1"
+  },
+  {
+    "partners": [
+      "TCHALM",
+      "SALOU"
+    ],
+    "comment": "Union de Caləm et Salʋ, génération 2"
+  },
+  {
+    "partners": [
+      "KPOTO",
+      "ATAMON_TCHAMATCHA"
+    ],
+    "comment": "Première union de Kpɔtʋ, génération 3"
+  },
+  {
+    "partners": [
+      "KPOTO",
+      "NASSOUN_TCHATRE"
+    ],
+    "comment": "Seconde union de Kpɔtʋ, génération 3"
+  },
+  {
+    "partners": [
+      "ASSMA",
+      "AHIM_AKPANAKA"
+    ],
+    "comment": "Union d’Asəma et Ahiim Akpanaka, génération 4"
+  },
+  {
+    "partners": [
+      "ADJI",
+      "APTA_TCHAPE"
+    ],
+    "comment": "Première union d’Aci (Kɔmla), génération 5"
+  },
+  {
+    "partners": [
+      "ADJI",
+      "ALONIM_YAWAVI_AKPALO"
+    ],
+    "comment": "Seconde union d’Aci (Kɔmla), génération 5"
+  },
+  {
+    "partners": [
+      "KPATE",
+      "ALI_SINDEMON_ALOUNLABE"
+    ],
+    "comment": "Première union de Kpaatə, génération 5"
+  },
+  {
+    "partners": [
+      "KPATE",
+      "ASIBE"
+    ],
+    "comment": "Seconde union de Kpaatə et Asipɨ, génération 5"
+  },
+  {
+    "partners": [
+      "TCHALO",
+      "ATCHI_ABLAVI_KPAHAYAL"
+    ],
+    "comment": "Union de Calɔ et Acɩ Apəlafi Kpahayal, génération 6"
+  },
+  {
+    "partners": [
+      "MOSSI",
+      "KPALBI"
+    ],
+    "comment": "Première union de Mɔsɩ et Kpalpɩ, génération 6"
+  },
+  {
+    "partners": [
+      "MOSSI",
+      "AKOU"
+    ],
+    "comment": "Seconde union de Mɔsɩ et Aku, génération 6"
+  },
+  {
+    "partners": [
+      "MOSSI",
+      "FEMME_ANEHO"
+    ],
+    "comment": "Troisième union de Mɔsɩ et femme d’Aného, génération 6"
+  },
+  {
+    "partners": [
+      "ATCHANE",
+      "SELA_TCHONA"
+    ],
+    "comment": "Union d’Acanə et Sɩla Cɔna, génération 7"
+  },
+  {
+    "partners": [
+      "ACHERA",
+      "CARBOU"
+    ],
+    "comment": "Union d’Aʃyɩra et CARBOU, génération 9"
+  },
+  {
+    "partners": [
+      "KORNA",
+      "AGBANDE"
+    ],
+    "comment": "Union de Kʋrəna et agbandé, génération 9"
+  },
+  {
+    "partners": [
+      "KPANIM",
+      "UNKNOWN_FATHER_KPANIM_G8"
+    ],
+    "comment": "Union de Kpanəm et père inconnu, génération 8"
+  },
+  {
+    "partners": [
+      "TCHAMA",
+      "KPOTO_ACHERA"
+    ],
+    "comment": "Première union de Cama et Kpɔtʋ Aʃyɩra, génération 3"
+  },
+  {
+    "partners": [
+      "TCHAMA",
+      "AKPAYALA_KONAFATE"
+    ],
+    "comment": "Seconde union de Cama et Akpayala Kʋnafatə, génération 3"
+  },
+  {
+    "partners": [
+      "KARKA2",
+      "NATI"
+    ],
+    "comment": "Union de Karka et Natɩ, génération 5"
+  },
+  {
+    "partners": [
+      "NAPO",
+      "AGBONG_AFI"
+    ],
+    "comment": "Première union de Napɔ et Akpɔn Afi, génération 7"
+  },
+  {
+    "partners": [
+      "NAPO",
+      "WADJIRE"
+    ],
+    "comment": "Seconde union de Napɔ et Чacɨr, génération 7"
+  },
+  {
+    "partners": [
+      "MAYABA",
+      "UNKNOWN_FATHER_MAYABA_G6"
+    ],
+    "comment": "Union de Mayapa et père inconnu, génération 6"
+  },
+  {
+    "partners": [
+      "KARKI",
+      "UNKNOWN_MOTHER_KARKI_G6"
+    ],
+    "comment": "Union de Karkɩ (Papa) et mère inconnue, génération 6"
+  },
+  {
+    "partners": [
+      "NAMBEA",
+      "ASSOUMATINE_DEFALWO"
+    ],
+    "comment": "Première union de Naanpya avec Asʋmatɩɩn Rəfalwᵼɔ, génération 4"
+  },
+  {
+    "partners": [
+      "NAMBEA",
+      "KOLA_FATIMA"
+    ],
+    "comment": "Seconde union de Naanpya avec Kɔla Fatəma, génération 4"
+  },
+  {
+    "partners": [
+      "NAMBEA",
+      "AKPOSSA_KPAHA"
+    ],
+    "comment": "Troisième union de Naanpya avec Akpɔsa Kpaha, génération 4"
+  },
+  {
+    "partners": [
+      "KOFFI",
+      "AMEYO"
+    ],
+    "comment": "Première union de Kofi et AMEYO, génération 5"
+  },
+  {
+    "partners": [
+      "KOFFI",
+      "LOSSO_FEMME"
+    ],
+    "comment": "Deuxième union de Kofi et femme Losso, génération 5"
+  },
+  {
+    "partners": [
+      "KOFFI",
+      "MASSA"
+    ],
+    "comment": "Troisième union de Kofi et Masa, génération 5"
+  },
+  {
+    "partners": [
+      "KOFFI",
+      "KOTOKOLI_FEMME"
+    ],
+    "comment": "Quatrième union de Kofi et femme Kotokoli, génération 5"
+  },
+  {
+    "partners": [
+      "KOFFI",
+      "ZAMBARMA_FEMME"
+    ],
+    "comment": "Cinquième union de Kofi et femme Zambarma, génération 5"
+  },
+  {
+    "partners": [
+      "KOSSI2",
+      "AMALAO_HORTENCE"
+    ],
+    "comment": "Union de Kɔsɩ et Amalawʋ (Hortence), génération 5"
+  },
+  {
+    "partners": [
+      "MAKAWA",
+      "AKPOSSO_FEMME"
+    ],
+    "comment": "Union de Makaчa (Antoine) et femme Akposso, génération 5"
+  },
+  {
+    "partners": [
+      "KOKOU",
+      "TENE_ABRA"
+    ],
+    "comment": "Union de Kɔkʋ et Tɩɩn Apəra, génération 5"
+  },
+  {
+    "partners": [
+      "KOMLA_ADAMOU",
+      "KENA_MARIETOU"
+    ],
+    "comment": "Première union de Kɔmla (Aramʋ) et KENA Mariétou, génération 5"
+  },
+  {
+    "partners": [
+      "KOMLA_ADAMOU",
+      "DEUXIEME_FEMME_KOMLA"
+    ],
+    "comment": "Deuxième union de Kɔmla (Aramʋ) et deuxième femme, génération 5"
+  },
+  {
+    "partners": [
+      "KARKA_DONNE",
+      "AZIA"
+    ],
+    "comment": "Union de Karka (DONNE) et AZIA, génération 5"
+  },
+  {
+    "partners": [
+      "AHARH",
+      "AGBONG_ALONIM_ANIA_YEMB_ANAMAYIRE"
+    ],
+    "comment": "Première union d’Ahaar avec Akpɔn Alɔnəm, Anya, Yᵼmpə, Anamayᵼʈə ou Anamayᵼrə, génération 3"
+  },
+  {
+    "partners": [
+      "AHARH",
+      "HINDOUBE"
+    ],
+    "comment": "Seconde union d’Ahaar avec Hintʋpə, génération 3"
+  },
+  {
+    "partners": [
+      "AHARH",
+      "SAA_VEUVE"
+    ],
+    "comment": "Troisième union d’Ahaar avec la veuve de Saa, génération 3"
+  },
+  {
+    "partners": [
+      "GNAMA4",
+      "ATCHI_SALOU"
+    ],
+    "comment": "Première union de Ɲama et Acɩ Salʋ, génération 4"
+  },
+  {
+    "partners": [
+      "GNAMA4",
+      "KARO_MAPATRE"
+    ],
+    "comment": "Deuxième union de Ɲama et Kaarʋ Mapatər, génération 4"
+  },
+  {
+    "partners": [
+      "GNAMA4",
+      "AFFALALEBA_WOMBE"
+    ],
+    "comment": "Troisième union de Ɲama et Afalalyəpa Wɔmpə, génération 4"
+  },
+  {
+    "partners": [
+      "GNAMA4",
+      "AHARE_APAH"
+    ],
+    "comment": "Quatrième union de Ɲama et Ahaar Apa, génération 4"
+  },
+  {
+    "partners": [
+      "GNAMA4",
+      "AKPATE_KOMBE"
+    ],
+    "comment": "Cinquième union de Ɲama et Akpatɩ Kwᵼmpə, génération 4"
+  },
+  {
+    "partners": [
+      "GNAMA4",
+      "TINE_NASSI"
+    ],
+    "comment": "Sixième union de Ɲama et Tɩɩn Nasi, génération 4"
+  },
+  {
+    "partners": [
+      "ADJI6",
+      "ARAMOU_ACHIAKISSA"
+    ],
+    "comment": "Première union d’Aci (Pierre) et Aramʋ Aʃyakəsa, génération 5"
+  },
+  {
+    "partners": [
+      "ADJI6",
+      "KPRTAOU_ADJERETOU_WOURIO"
+    ],
+    "comment": "Seconde union d’Aci (Pierre) et KPRTAOU ADJERETOU WOURIO, génération 5"
+  },
+  {
+    "partners": [
+      "ADJI6",
+      "ADJA_ESSI"
+    ],
+    "comment": "Troisième union d’Aci (Pierre) et ADJA ESSI, génération 5"
+  },
+  {
+    "partners": [
+      "ADJI6",
+      "KOSSIWA"
+    ],
+    "comment": "Quatrième union d’Aci (Pierre) et Kɔsʋwa, génération 5"
+  },
+  {
+    "partners": [
+      "ADJIA3",
+      "KOUNAKOU_AKOUAVI_NADINE"
+    ],
+    "comment": "Union de Acya (Léon) et KOUNAKOU Akouavi Nadine, génération 6"
+  },
+  {
+    "partners": [
+      "AGBEANDA4",
+      "PUGLIELLI_CRISTINA"
+    ],
+    "comment": "Union de Akpyanta et PUGLIELLI Cristina, génération 6"
+  },
+  {
+    "partners": [
+      "TCHAMSS",
+      "MANDAO_KOUTALEME_MAI"
+    ],
+    "comment": "Union de Camsə et Manʈawʋ Kʋtaləm Mayɩ, génération 6"
+  },
+  {
+    "partners": [
+      "AHOSR2",
+      "NATALIE_MAZIERE"
+    ],
+    "comment": "Première union de Ahʋsər (Omer) et Natalie Mazière, génération 6"
+  },
+  {
+    "partners": [
+      "AHOSR2",
+      "AKAYA_FELIE"
+    ],
+    "comment": "Seconde union de Ahʋsər (Omer) et Akaya Félie, génération 6"
+  },
+  {
+    "partners": [
+      "AHOSR2",
+      "KIDEMA_EDEKE_DZIFA"
+    ],
+    "comment": "Troisième union de Ahʋsər (Omer) et KIDEMA Edeke DZIFA, génération 6"
+  },
+  {
+    "partners": [
+      "OURNA",
+      "OURO_AGOUDA_FALILA"
+    ],
+    "comment": "Union de Urna et OURO AGOUDA Falila, génération 6"
+  },
+  {
+    "partners": [
+      "MAFISSA",
+      "BECOIN_AMLAN_OLGA"
+    ],
+    "comment": "Union de Mafisa (Eric) et BECOIN AMLAN Olga, génération 6"
+  },
+  {
+    "partners": [
+      "KARKA3",
+      "TIAFE_AYITE"
+    ],
+    "comment": "Première union de Karka et TIAFE AYITE, génération 6"
+  },
+  {
+    "partners": [
+      "KARKA3",
+      "KPESSEMOURE_AKOUA"
+    ],
+    "comment": "Seconde union de Karka et KPESSEMOURE Akoua, génération 6"
+  },
+  {
+    "partners": [
+      "KARKA3",
+      "KOUEVI_AMEVONDE_VICTOIRE"
+    ],
+    "comment": "Troisième union de Karka et KOUEVI Amevonde Victoire, génération 6"
+  },
+  {
+    "partners": [
+      "TCHANDN",
+      "KOKO"
+    ],
+    "comment": "Union de Canʈən et Kɔkɔ, génération 6"
+  },
+  {
+    "partners": [
+      "ALONIM2",
+      "AKATA"
+    ],
+    "comment": "Union de Alɔnəm et AKATA, génération 6"
+  },
+  {
+    "partners": [
+      "ANIA2",
+      "BALAKA"
+    ],
+    "comment": "Union de Anya (Cathé) et BALAKA, génération 6"
+  },
+  {
+    "partners": [
+      "ASSINLIRA",
+      "IVOIRIEN"
+    ],
+    "comment": "Union de Asɩnlɩra et Ivoirien, génération 6"
+  },
+  {
+    "partners": [
+      "ASSANDE2",
+      "KPAKO_TCHONIM_AKOUA"
+    ],
+    "comment": "Première union de Asanʈə et Kpakʋ Cɔnəm Akʋwa, génération 4"
+  },
+  {
+    "partners": [
+      "ASSANDE2",
+      "WADJAKA_MASSINA"
+    ],
+    "comment": "Seconde union de Asanʈə et Wacaka masəna, génération 4"
+  },
+  {
+    "partners": [
+      "ASSANDE2",
+      "KENDE_ACHIATIEM"
+    ],
+    "comment": "Troisième union de Asanʈə et Kyəntə Aʃyatyam, génération 4"
+  },
+  {
+    "partners": [
+      "KOUYARA",
+      "LAKMATI_ADINIM"
+    ],
+    "comment": "Union de Kʋyara et Lakəmatɩ Atɨnɨm (Sévérine), génération 5"
+  },
+  {
+    "partners": [
+      "KOUYARA",
+      "UNKNOWN_FEMME_KOUYARA_G5_2"
+    ],
+    "comment": "Seconde union de Kʋyara et deuxième femme, génération 5"
+  },
+  {
+    "partners": [
+      "TITA2",
+      "ABBE_SAN"
+    ],
+    "comment": "Union de Tɩta et ABBE SAN, génération 5"
+  },
+  {
+    "partners": [
+      "AYAKA",
+      "MANDAO_ALANDE"
+    ],
+    "comment": "Union de Ayaka et MANDAO ALANDE, génération 5"
+  },
+  {
+    "partners": [
+      "KOMBE",
+      "UNKNOWN_FATHER_KOMBE_G6"
+    ],
+    "comment": "Union de Kwɔmpə et père inconnu, génération 6"
+  },
+  {
+    "partners": [
+      "OBI_APASSA",
+      "UNKNOWN_FATHER_OBI_APASSA_G6"
+    ],
+    "comment": "Union de Opi (APASSA) et père inconnu, génération 6"
+  },
+  {
+    "partners": [
+      "ABSRE3",
+      "AGBEVE_EMMANUEL"
+    ],
+    "comment": "Union de Apɨsɨr (Charlotte) et AGBEVE Emmanuel, génération 5"
+  },
+  {
+    "partners": [
+      "ANASARA",
+      "MBETA_MARIE"
+    ],
+    "comment": "Première union de Acya (Adjia) (Anasara) et Mpɩta Mari, génération 4"
+  },
+  {
+    "partners": [
+      "ANASARA",
+      "MARIE2"
+    ],
+    "comment": "Seconde union de Acya (Adjia) (Anasara) et Marie, génération 4"
+  },
+  {
+    "partners": [
+      "TOKOSNLABA",
+      "FEMME_APU"
+    ],
+    "comment": "Première union de Tʋkʋsənlapa (Michel) et femme de la famille Apu, génération 4"
+  },
+  {
+    "partners": [
+      "TOKOSNLABA",
+      "MISSI_PASCALINE"
+    ],
+    "comment": "Seconde union de Tʋkʋsənlapa (Michel) et Mɩsə Pascaline, génération 4"
+  },
+  {
+    "partners": [
+      "APTA3",
+      "NAPO_BADJI"
+    ],
+    "comment": "Union de Apəta (Grégoire) et NAPO BADJI (BEBE), génération 4"
+  },
+  {
+    "partners": [
+      "APTA3",
+      "FEMME_MOBA"
+    ],
+    "comment": "Union de Apəta (Grégoire) et femme moba, génération 4"
+  },
+  {
+    "partners": [
+      "FADA",
+      "KOALA_KONTO"
+    ],
+    "comment": "Première union de Fata et Kwala Kwɔntʋ, génération 4"
+  },
+  {
+    "partners": [
+      "FADA",
+      "LEDA_BAKAYIMA"
+    ],
+    "comment": "Seconde union de Fata et LEDA BAKAYIMA, génération 4"
+  },
+  {
+    "partners": [
+      "AGBEANDA3",
+      "AFTOU_KPAHA"
+    ],
+    "comment": "Première union de Akpyanta et Afətʋ Kpaha, génération 3"
+  },
+  {
+    "partners": [
+      "AGBEANDA3",
+      "BLANTARE_TCHATRE"
+    ],
+    "comment": "Seconde union de Akpyanta et Pəlantarə Catər, génération 3"
+  },
+  {
+    "partners": [
+      "AGBEANDA3",
+      "TITA3"
+    ],
+    "comment": "Troisième union de Akpyanta et Tɩta, génération 3"
+  },
+  {
+    "partners": [
+      "AGBEANDA3",
+      "AGBONTEMBA_KOTENDIO"
+    ],
+    "comment": "Quatrième union de Akpyanta et Akpɔntyəmpa Kʋtanʈyɔ, génération 3"
+  },
+  {
+    "partners": [
+      "KPAKO2",
+      "ISSAKA_DONKO"
+    ],
+    "comment": "Première union de kpakʋ et ISSAKA Donko, génération 4"
+  },
+  {
+    "partners": [
+      "KPAKO2",
+      "AGNOSSILIM_ATEKIME"
+    ],
+    "comment": "Seconde union de kpakʋ et Aɲɔsəlyəm Atɩkəm, génération 4"
+  },
+  {
+    "partners": [
+      "KPAKO2",
+      "ASSIMA_WEBI"
+    ],
+    "comment": "Troisième union de kpakʋ et Asima Wᵼpɩ, génération 4"
+  },
+  {
+    "partners": [
+      "KPAKO2",
+      "AWI_YAWA"
+    ],
+    "comment": "Quatrième union de kpakʋ et AWI Yawa, génération 4"
+  },
+  {
+    "partners": [
+      "TCHITCHI",
+      "EDJAM_BILAKATE_AFI"
+    ],
+    "comment": "Union de Cici et EDJAM BILAKATE AFI, génération 4"
+  },
+  {
+    "partners": [
+      "ADJI13",
+      "UNKNOWN_MOTHER_ADJI13_G6"
+    ],
+    "comment": "Union de Aci et mère inconnue, génération 6"
+  },
+  {
+    "partners": [
+      "AGNONTEMBA",
+      "BASSAYI_CENTRO"
+    ],
+    "comment": "Union de Aɲʋntyəmpa et BASSAYI de CENTRO, génération 5"
+  },
+  {
+    "partners": [
+      "MAPISSA",
+      "UNKNOWN_FATHER_MAPISSA_G6"
+    ],
+    "comment": "Union de Mapɩsa et père inconnu, génération 6"
+  },
+  {
+    "partners": [
+      "KPESSOU4",
+      "HAKOU_ACHERA_KATO"
+    ],
+    "comment": "Première union de Kpyasʋ (Canʈən) et Hakʋ Aʃyɩra Katʋ, génération 3"
+  },
+  {
+    "partners": [
+      "KPESSOU4",
+      "LAKMATE_TATA_AKPELAYASSI"
+    ],
+    "comment": "Seconde union de Kpyasʋ (Canʈən) et Lakəmatɩ Tata Akpɩlayasɩ, génération 3"
+  },
+  {
+    "partners": [
+      "KPESSOU4",
+      "APTA_AKIBE_KADOU"
+    ],
+    "comment": "Troisième union de Kpyasʋ (Canʈən) et Apəta Akɩpə Kaʈʋ, génération 3"
+  },
+  {
+    "partners": [
+      "KPESSOU4",
+      "AGNASR_ALIO"
+    ],
+    "comment": "Quatrième union de Kpyasʋ (Canʈən) et Aɲasər Alyo, génération 3"
+  },
+  {
+    "partners": [
+      "KPESSOU4",
+      "SITE_ARISIMA"
+    ],
+    "comment": "Cinquième union de Kpyasʋ (Canʈən) et sɨtɨ Arɩsəma, génération 3"
+  },
+  {
+    "partners": [
+      "KPESSOU4",
+      "KEMBE_KOUMTE"
+    ],
+    "comment": "Sixième union de Kpyasʋ (Canʈən) et Kyᵼmpə Kwᵼmtɩ, génération 3"
+  },
+  {
+    "partners": [
+      "KOTA4",
+      "KOUTOUM_AAKAWOMA"
+    ],
+    "comment": "Première union de Kwata (Daniel) et Kʋtʋm Aakawᵼma (Martine), génération 4"
+  },
+  {
+    "partners": [
+      "KOTA4",
+      "TCHEKRE_SIMKORNIM"
+    ],
+    "comment": "Seconde union de Kwata (Daniel) et Cᵼkər Səmkwaʈənəm, génération 4"
+  },
+  {
+    "partners": [
+      "KOTA4",
+      "AGBETRA_AYENON"
+    ],
+    "comment": "Troisième union de Kwata (Daniel) et Akpyatəra Ayənɔ, génération 4"
+  },
+  {
+    "partners": [
+      "AHAWARE",
+      "DJASSAH_KOUGNATA"
+    ],
+    "comment": "Union de Ahaчar (Guy) et DJASSAH Kougnata (Trinité), génération 5"
+  },
+  {
+    "partners": [
+      "GNAMA_OUKLA",
+      "BANA_EWAI_NMAA"
+    ],
+    "comment": "Première union de Ɲama Ʋkəla (Yves) et Pana Ɩwayɩ Nma, génération 5"
+  },
+  {
+    "partners": [
+      "GNAMA_OUKLA",
+      "ZOZO_ADJOVI"
+    ],
+    "comment": "Deuxième union de Ɲama Ʋkəla (Yves) et ZOZO ADJOVI, génération 5"
+  },
+  {
+    "partners": [
+      "GNAMA_OUKLA",
+      "BOURAIMA_FARIDATH"
+    ],
+    "comment": "Troisième union de Ɲama Ʋkəla (Yves) et BOURAIMA Faridath, génération 5"
+  },
+  {
+    "partners": [
+      "KPOTO2",
+      "KADAKO_PIDISEWE_AFI"
+    ],
+    "comment": "Union de Kpɔtʋ (Ignace) et KADAKO Pidisewé Afi, génération 5"
+  },
+  {
+    "partners": [
+      "APTA_AGBEANDA",
+      "TENA_TANTIDJOUMA"
+    ],
+    "comment": "Union de Apəta Akpyanta (Anicet-Laurent) et TENA TANTIDJOUMA (Constance), génération 5"
+  },
+  {
+    "partners": [
+      "NANGBANYAR",
+      "DE_PEDRINI_SIMONA_GIOVANNA"
+    ],
+    "comment": "Première union de Kpana Nankpayaar (Constant) et De Pedrini Simona Giovanna, génération 5"
+  },
+  {
+    "partners": [
+      "NANGBANYAR",
+      "TOGOLAISE_FEMME"
+    ],
+    "comment": "Seconde union de Kpana Nankpayaar (Constant) et femme Togolaise, génération 5"
+  },
+  {
+    "partners": [
+      "ALONIM6",
+      "KAHON"
+    ],
+    "comment": "Union de Alɔnəm et KAHON, génération 5"
+  },
+  {
+    "partners": [
+      "ANIA_ANAYEBA",
+      "JB_AGBATI"
+    ],
+    "comment": "Union de Anya Anayᵼpa et JB AGBATI, génération 5"
+  },
+  {
+    "partners": [
+      "KPANIM3",
+      "BAKELE"
+    ],
+    "comment": "Union de Kpanəm (Bella) et Bakele, génération 5"
+  },
+  {
+    "partners": [
+      "MONGO4",
+      "HOULAPE_AYENON"
+    ],
+    "comment": "Union de Mɔnkʋ et Hʋlapə Ayənɔ, génération 4"
+  },
+  {
+    "partners": [
+      "AKPOSSO",
+      "KPADJIAKA_NATI"
+    ],
+    "comment": "Union de Akpɔsɔ (Akpasɔ) et Kpacyaka Natɩ, génération 4"
+  },
+  {
+    "partners": [
+      "KPAKO3",
+      "KAO_KOUTCHUKALO"
+    ],
+    "comment": "Union de kpakʋ et Kawʋ Kucukalʋ, génération 4"
+  },
+  {
+    "partners": [
+      "CHIENDE",
+      "UNKNOWN_FATHER_CHIENDE_G5"
+    ],
+    "comment": "Union de ʃyəntɩ (Delphine) et père inconnu, génération 5"
+  },
+  {
+    "partners": [
+      "ANTE3",
+      "TORA"
+    ],
+    "comment": "Union de Antɩ et TORA, génération 5"
+  },
+  {
+    "partners": [
+      "ASSINLIRA2",
+      "AKPA_JULIEN"
+    ],
+    "comment": "Union de Asɩnlɩra (Solange) et AKPA Julien, génération 5"
+  },
+  {
+    "partners": [
+      "NASSI5",
+      "AGBEKODO_ELOM"
+    ],
+    "comment": "Union de Nasi (Sandra) et AGBEKODO Elom, génération 5"
+  },
+  {
+    "partners": [
+      "ALIMATA",
+      "TCHALA"
+    ],
+    "comment": "Union de Alimata et TCHALA, génération 5"
+  },
+  {
+    "partners": [
+      "OUSARIM",
+      "UNKNOWN_FATHER_OUSARIM_G6"
+    ],
+    "comment": "Union de Ʋsarəm (Sɨka) et père inconnu, génération 6"
+  },
+  {
+    "partners": [
+      "HILAMA",
+      "AMEGNIGNOR_MOMO"
+    ],
+    "comment": "Union de HILAMA (Charlotte) et AMEGNIGNOR Momo, génération 5"
+  },
+  {
+    "partners": [
+      "OUSSARA",
+      "AGUETON_JONATHAN"
+    ],
+    "comment": "Union de Ʋsara (Anne) et AGUETON Jonathan, génération 5"
+  },
+  {
+    "partners": [
+      "KPANIM2",
+      "AHARE4"
+    ],
+    "comment": "Union de Kpanəm et Ahare, génération 4"
+  },
+  {
+    "partners": [
+      "AKORE",
+      "AYASSOUR_TEN"
+    ],
+    "comment": "Union de Akwarɩ et Ayasʋʋr Tɩɩn, génération 4"
+  },
+  {
+    "partners": [
+      "ABN2",
+      "KANKRE"
+    ],
+    "comment": "Union de Apən et Kankre, génération 4"
+  },
+  {
+    "partners": [
+      "NANKPISSA_KARBOU",
+      "BREKANA_ADJOA"
+    ],
+    "comment": "Première union de Naankpisa (Karpu) et Pərakəna Acʋwa, génération 3"
+  },
+  {
+    "partners": [
+      "NANKPISSA_KARBOU",
+      "CELIATOU"
+    ],
+    "comment": "Seconde union de Naankpisa (Karpu) et Sɨlyatu, génération 3"
+  },
+  {
+    "partners": [
+      "NANKPISSA_KARBOU",
+      "ADJOWA2"
+    ],
+    "comment": "Troisième union de Naankpisa (Karpu) et Acʋwa, génération 3"
+  },
+  {
+    "partners": [
+      "NANKPISSA_KARBOU",
+      "UNKNOWN_FEMME_NANKPISSA_G3_4"
+    ],
+    "comment": "Quatrième union de Naankpisa (Karpu) et quatrième femme, génération 3"
+  },
+  {
+    "partners": [
+      "ASSIMB",
+      "UNKNOWN_FATHER_ASSIMB_G4"
+    ],
+    "comment": "Union de Asɩmpə et père inconnu, génération 4"
+  },
+  {
+    "partners": [
+      "AYEPA",
+      "UNKNOWN_MOTHER_AYEPA_G5"
+    ],
+    "comment": "Union de Ayᵼpa et mère inconnue, génération 5"
+  },
+  {
+    "partners": [
+      "ALOR",
+      "UNKNOWN_FATHER_ALOR_G5"
+    ],
+    "comment": "Union de Alɔɔr et père inconnu, génération 5"
+  },
+  {
+    "partners": [
+      "ADJI14",
+      "UNKNOWN_MOTHER_ADJI14_G5"
+    ],
+    "comment": "Union de Aci et mère inconnue, génération 5"
+  },
+  {
+    "partners": [
+      "ACHIAHAM8",
+      "UNKNOWN_PARENT_ACHIAHAM8_G6"
+    ],
+    "comment": "Union de Aʃyahamə et parent inconnu, génération 6"
+  }
+]
