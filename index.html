@@ -660,11 +660,15 @@
       setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(a.href); }, 500);
     };
     document.getElementById('export-excel-btn').onclick = function() {
+      // Utilise la sélection si elle existe, sinon tout
+      const personsToExport = (window.selectedPersons && window.selectedPersons.length) ? window.selectedPersons : allPersons;
+      const unionsToExport = (window.selectedUnions && window.selectedUnions.length) ? window.selectedUnions : allUnions;
+      const parentagesToExport = (window.selectedParentages && window.selectedParentages.length) ? window.selectedParentages : allParentages;
       // Convertir les données en feuilles Excel
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allPersons), 'Persons');
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allUnions), 'Unions');
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(allParentages), 'Parentages');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(personsToExport), 'Persons');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(unionsToExport), 'Unions');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(parentagesToExport), 'Parentages');
       const wbout = XLSX.write(wb, {bookType:'xlsx', type:'array'});
       const blob = new Blob([wbout], {type: 'application/octet-stream'});
       const a = document.createElement('a');
@@ -1064,6 +1068,97 @@
       }
     }
     document.getElementById('center-tree-btn').onclick = centerTree;
+
+    // === SÉLECTION DANS LA TIMELINE ===
+    // Tableaux pour stocker les sélections
+    let selectedPersons = [];
+    let selectedUnions = [];
+    let selectedParentages = [];
+
+    // Ajout d'une classe CSS pour la surbrillance de sélection
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .timeline-item.selected, .node.selected {
+        outline: 3px solid #1976d2 !important;
+        background: #e0e7ff !important;
+        box-shadow: 0 0 8px #1976d2;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Fonction pour gérer la sélection/désélection d'un élément
+    function toggleSelection(type, id) {
+      let arr;
+      if (type === 'person') arr = selectedPersons;
+      else if (type === 'union') arr = selectedUnions;
+      else if (type === 'parentage') arr = selectedParentages;
+      else return;
+      const idx = arr.indexOf(id);
+      if (idx === -1) arr.push(id);
+      else arr.splice(idx, 1);
+      updateSelectionHighlight();
+    }
+
+    // Met à jour la surbrillance visuelle
+    function updateSelectionHighlight() {
+      // Pour les nœuds de l'arbre (personnes)
+      d3.selectAll('.node').each(function(d) {
+        d3.select(this).classed('selected', selectedPersons.includes(d.data.id));
+      });
+      // Pour la timeline (si elle existe)
+      document.querySelectorAll('.timeline-item').forEach(el => {
+        const type = el.getAttribute('data-type');
+        const id = el.getAttribute('data-id');
+        let selected = false;
+        if (type === 'person') selected = selectedPersons.includes(id);
+        else if (type === 'union') selected = selectedUnions.includes(id);
+        else if (type === 'parentage') selected = selectedParentages.includes(id);
+        el.classList.toggle('selected', selected);
+      });
+    }
+
+    // Ajout du gestionnaire de clic sur les nœuds de l'arbre pour la sélection
+    function enableNodeSelection() {
+      d3.selectAll('.node').on('click', function(event, d) {
+        if (event.ctrlKey || event.metaKey) {
+          toggleSelection('person', d.data.id);
+          event.stopPropagation();
+          return;
+        }
+        // ...sinon comportement normal (fiche détaillée)
+        showPersonDetail(d.data);
+      });
+    }
+
+    // Si une timeline custom existe, ajouter la sélection dessus (exemple générique)
+    function enableTimelineSelection() {
+      document.querySelectorAll('.timeline-item').forEach(el => {
+        el.onclick = function(e) {
+          if (e.ctrlKey || e.metaKey) {
+            const type = el.getAttribute('data-type');
+            const id = el.getAttribute('data-id');
+            toggleSelection(type, id);
+            e.stopPropagation();
+          }
+        };
+      });
+    }
+
+    // Appeler ces fonctions après chaque rendu de l'arbre/timeline
+    function afterRender() {
+      enableNodeSelection();
+      enableTimelineSelection();
+      updateSelectionHighlight();
+    }
+    // Appeler afterRender() à la fin de renderTree et après affichage de la timeline
+    const origRenderTree = renderTree;
+    renderTree = function() {
+      origRenderTree.apply(this, arguments);
+      afterRender();
+    };
+    document.getElementById('close-detail').onclick = function() {
+      document.getElementById('person-detail').style.display = 'none';
+    };
   </script>
 </body>
 </html>
