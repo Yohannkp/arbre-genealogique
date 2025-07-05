@@ -794,32 +794,69 @@
     };
     document.getElementById('search-person').oninput = function() {
       const val = this.value;
+      const resultsDivId = 'search-results-list';
+      let resultsDiv = document.getElementById(resultsDivId);
+      if (!resultsDiv) {
+        resultsDiv = document.createElement('div');
+        resultsDiv.id = resultsDivId;
+        resultsDiv.style.position = 'absolute';
+        resultsDiv.style.left = '220px';
+        resultsDiv.style.top = '50px';
+        resultsDiv.style.zIndex = '120';
+        resultsDiv.style.background = '#fff';
+        resultsDiv.style.border = '1.5px solid #1976d2';
+        resultsDiv.style.borderRadius = '8px';
+        resultsDiv.style.boxShadow = '0 2px 8px #b3c6e7';
+        resultsDiv.style.padding = '10px 18px';
+        resultsDiv.style.maxWidth = '320px';
+        resultsDiv.style.fontSize = '16px';
+        resultsDiv.style.display = 'none';
+        document.body.appendChild(resultsDiv);
+      }
       if (!val.trim()) {
         highlightNodeByName('');
         populatePersonSelect();
         refreshTree();
+        resultsDiv.style.display = 'none';
         return;
       }
       const normVal = normalizeString(val);
       // Recherche tolérante (nom/surnom/id commence ou contient la recherche, sans accents ni casse)
-      const foundPerson = allPersons.find(p =>
-        normalizeString(p.name).startsWith(normVal) ||
-        normalizeString(p.nickname).startsWith(normVal) ||
-        normalizeString(p.id).startsWith(normVal)
-      ) || allPersons.find(p =>
+      const foundPersons = allPersons.filter(p =>
         normalizeString(p.name).includes(normVal) ||
         normalizeString(p.nickname).includes(normVal) ||
         normalizeString(p.id).includes(normVal)
       );
-      if (foundPerson) {
-        currentRootId = foundPerson.id;
+      if (foundPersons.length === 1) {
+        currentRootId = foundPersons[0].id;
         highlightNodeByName(val);
         refreshTree();
         populatePersonSelect(val);
+        resultsDiv.style.display = 'none';
+      } else if (foundPersons.length > 1) {
+        // Afficher la liste des résultats
+        resultsDiv.innerHTML = '<b>Résultats multiples&nbsp;:</b><ul style="margin:8px 0 0 0;padding:0 0 0 18px;">' +
+          foundPersons.map(p => `<li style='margin-bottom:4px;'><a href='#' style='color:#1976d2;text-decoration:underline;' onclick='window.selectSearchResultPerson("${p.id}");return false;'>${p.name}${p.nickname ? ' <span style=\'color:#888\'>(alias: '+p.nickname+')</span>' : ''}</a></li>`).join('') +
+          '</ul>';
+        resultsDiv.style.display = 'block';
+        // Surligner tous les résultats
+        highlightNodeByName(val);
+        // Optionnel: scroll to first result
+        if (foundPersons[0]) {
+          currentRootId = foundPersons[0].id;
+          refreshTree();
+          populatePersonSelect(val);
+        }
       } else {
         highlightNodeByName(val);
-        // On ne vide plus l'arbre, on garde la racine actuelle et on surligne les correspondances partielles
+        resultsDiv.style.display = 'none';
       }
+    };
+    // Fonction globale pour sélectionner une personne depuis la liste de résultats
+    window.selectSearchResultPerson = function(id) {
+      document.getElementById('person-select').value = id;
+      refreshTree();
+      document.getElementById('search-results-list').style.display = 'none';
     };
 
     // --- Surlignage des nœuds correspondant à la recherche ---
